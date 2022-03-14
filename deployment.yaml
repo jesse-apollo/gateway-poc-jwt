@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: gateway
+  name: gateway
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: gateway
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+        - image: gcr.io/lovelace-demo/gateway-poc
+          imagePullPolicy: Always
+          name: gateway
+          resources:
+            requests:
+              cpu: "1"
+              memory: 1024Mi
+            limits:
+              cpu: "1"
+              memory: 1024Mi
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: PORT
+              value: "4000"
+          envFrom:
+            - secretRef:
+                name: prod-secrets
+          ports:
+            - name: http
+              containerPort: 4000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway
+spec:
+  selector:
+    app: gateway
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 4000

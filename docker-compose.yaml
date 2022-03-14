@@ -1,0 +1,10 @@
+version: '3.3'
+
+services:
+  gateway:
+    image: gateway-poc
+    environment:
+      - APOLLO_KEY
+      - APOLLO_GRAPH_REF
+    ports:
+      - "8000:3200"
