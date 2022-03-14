@@ -22,5 +22,6 @@ deploy:
 
 test:
 	docker-compose --env-file .env -f docker-compose.yaml up -d 
+	sleep 1
 	python3 client/test.py http://localhost:8000/
 	docker-compose stop
