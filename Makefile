@@ -25,3 +25,6 @@ test:
 	sleep 1
 	python3 client/test.py http://localhost:8000/
 	docker-compose stop
+
+destroy:
+	kubectl delete -f deployment.yaml
