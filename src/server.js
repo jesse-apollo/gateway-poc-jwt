@@ -38,9 +38,12 @@ function decodeJWT(request) {
     // Decode JWT (use verify for real use case: var decoded = jwt.verify(tokens[1], 'secret');)
     var decoded = jwt.decode(tokens[1]);  // <-- does not verify
     //console.log("Segmentation is " + decoded.client_name + " " + decoded.client_version);
-    
-    // set this to the real field values and add type safety
-    return decoded.client_name, decoded.client_version;
+
+    if (('client_name' in decoded) && ('client_version' in decoded)) {
+        // set this to the real field values and add type safety
+        return decoded.client_name, decoded.client_version;
+    }
+    return "", ""
 }
 
 const server = new ApolloServer({
